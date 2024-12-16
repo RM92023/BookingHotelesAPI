@@ -59,7 +59,8 @@ public class Main {
             System.out.println("4. Buscar hoteles con más detalles");
             System.out.println("5. Confirmar disponibilidad de habitaciones");
             System.out.println("6. Realizar reserva personalizada");
-            System.out.println("7. Salir");
+            System.out.println("7. Actualizar reserva");
+            System.out.println("8. Salir");
             System.out.print("Seleccione una opción: ");
             opcion = scanner.nextInt();
 
@@ -83,6 +84,9 @@ public class Main {
                     reservaIndex = realizarReserva(scanner, hotelNombres, habitacionesTipos, habitacionesDisponibles, habitacionesPrecios, reservasClientes, reservasHoteles, reservasTiposHabitacion, reservasCantidadHabitaciones, reservaIndex);
                     break;
                 case 7:
+                    actualizarReserva(scanner, hotelNombres, habitacionesTipos, habitacionesDisponibles, habitacionesPrecios, reservasClientes, reservasHoteles, reservasTiposHabitacion, reservasCantidadHabitaciones, reservasFechaInicio, reservasFechaFin, reservaIndex);
+                    break;
+                case 8:
                     System.out.println("¡Gracias por usar Booking Hoteles!");
                     break;
                 default:
@@ -398,5 +402,146 @@ public class Main {
 
         System.out.println("¡Se ha realizado la reserva con éxito!");
         return reservaIndex + 1;
+    }
+
+    public static void actualizarReserva(Scanner scanner, String[] hotelNombres, String[][] habitacionesTipos, int[][] habitacionesDisponibles, double[][] habitacionesPrecios,
+                                         String[] reservasClientes, String[] reservasHoteles, String[] reservasTiposHabitacion, int[] reservasCantidadHabitaciones,
+                                         LocalDate[] reservasFechaInicio, LocalDate[] reservasFechaFin, int reservaIndex) {
+        if (reservaIndex == 0) {
+            System.out.println("No hay reservas registradas.");
+            return;
+        }
+
+        System.out.print("Ingrese su email: ");
+        scanner.nextLine(); // Limpiar buffer
+        String email = scanner.nextLine();
+
+        System.out.print("Ingrese su fecha de nacimiento (YYYY-MM-DD): ");
+        LocalDate fechaNacimiento = LocalDate.parse(scanner.nextLine());
+
+        // Buscar la reserva
+        int reservaEncontrada = -1;
+        for (int i = 0; i < reservaIndex; i++) {
+            if (reservasClientes[i] != null && reservasClientes[i].contains(email)) {
+                reservaEncontrada = i;
+                break;
+            }
+        }
+
+        if (reservaEncontrada == -1) {
+            System.out.println("No se encontró ninguna reserva asociada al email proporcionado.");
+            return;
+        }
+
+        // Mostrar la reserva encontrada
+        System.out.printf("Reserva encontrada:\nCliente: %s\nHotel: %s\nHabitación: %s\nCantidad: %d\nFechas: %s a %s\n",
+                reservasClientes[reservaEncontrada],
+                reservasHoteles[reservaEncontrada],
+                reservasTiposHabitacion[reservaEncontrada],
+                reservasCantidadHabitaciones[reservaEncontrada],
+                reservasFechaInicio[reservaEncontrada],
+                reservasFechaFin[reservaEncontrada]);
+
+        System.out.println("¿Qué desea hacer?\n1. Cambiar habitación\n2. Cambiar alojamiento\n3. Cancelar");
+        int opcion = scanner.nextInt();
+
+        switch (opcion) {
+            case 1:
+                cambiarHabitacion(scanner, reservasHoteles[reservaEncontrada], habitacionesTipos, habitacionesDisponibles, habitacionesPrecios, hotelNombres, reservasTiposHabitacion, reservasCantidadHabitaciones, reservaEncontrada);
+                break;
+            case 2:
+                cambiarAlojamiento(scanner, reservaEncontrada, reservasClientes, reservasHoteles, reservasTiposHabitacion, reservasCantidadHabitaciones,
+                        reservasFechaInicio, reservasFechaFin, habitacionesDisponibles, hotelNombres, habitacionesTipos, habitacionesPrecios);
+
+                break;
+            case 3:
+                System.out.println("Operación cancelada.");
+                break;
+            default:
+                System.out.println("Opción no válida.");
+        }
+    }
+
+    public static void cambiarHabitacion(Scanner scanner, String hotelNombre, String[][] habitacionesTipos, int[][] habitacionesDisponibles,
+                                         double[][] habitacionesPrecios, String[] hotelNombres, String[] reservasTiposHabitacion,
+                                         int[] reservasCantidadHabitaciones, int reservaIndex) {
+        int hotelIndex = -1;
+        for (int i = 0; i < hotelNombres.length; i++) {
+            if (hotelNombre.equalsIgnoreCase(hotelNombres[i])) {
+                hotelIndex = i;
+                break;
+            }
+        }
+
+        if (hotelIndex == -1) {
+            System.out.println("Error al identificar el hotel.");
+            return;
+        }
+
+        System.out.println("Habitaciones disponibles:");
+        for (int i = 0; i < habitacionesTipos[hotelIndex].length; i++) {
+            if (habitacionesDisponibles[hotelIndex][i] > 0) {
+                System.out.printf("%s: Precio: %.2f\n", habitacionesTipos[hotelIndex][i], habitacionesPrecios[hotelIndex][i]);
+            }
+        }
+
+        System.out.print("Seleccione el nuevo tipo de habitación: ");
+        scanner.nextLine(); // Limpiar buffer
+        String nuevaHabitacion = scanner.nextLine();
+
+        int habitacionIndex = -1;
+        for (int i = 0; i < habitacionesTipos[hotelIndex].length; i++) {
+            if (habitacionesTipos[hotelIndex][i].equalsIgnoreCase(nuevaHabitacion)) {
+                habitacionIndex = i;
+                break;
+            }
+        }
+
+        if (habitacionIndex == -1 || habitacionesDisponibles[hotelIndex][habitacionIndex] < reservasCantidadHabitaciones[reservaIndex]) {
+            System.out.println("No hay disponibilidad para la nueva habitación.");
+            return;
+        }
+
+        // Actualizar habitación
+        habitacionesDisponibles[hotelIndex][habitacionIndex] -= reservasCantidadHabitaciones[reservaIndex];
+        reservasTiposHabitacion[reservaIndex] = nuevaHabitacion;
+
+        System.out.println("Habitación actualizada con éxito.");
+    }
+
+    public static void cambiarAlojamiento(Scanner scanner, int reservaIndex, String[] reservasClientes, String[] reservasHoteles,
+                                          String[] reservasTiposHabitacion, int[] reservasCantidadHabitaciones, LocalDate[] reservasFechaInicio,
+                                          LocalDate[] reservasFechaFin, int[][] habitacionesDisponibles, String[] hotelNombres,
+                                          String[][] habitacionesTipos, double[][] habitacionesPrecios) {
+        int hotelIndex = -1;
+        for (int i = 0; i < hotelNombres.length; i++) {
+            if (reservasHoteles[reservaIndex].equalsIgnoreCase(hotelNombres[i])) {
+                hotelIndex = i;
+                break;
+            }
+        }
+
+        if (hotelIndex != -1) {
+            // Revertir la disponibilidad de habitaciones
+            for (int i = 0; i < habitacionesTipos[hotelIndex].length; i++) {
+                if (habitacionesTipos[hotelIndex][i].equalsIgnoreCase(reservasTiposHabitacion[reservaIndex])) {
+                    habitacionesDisponibles[hotelIndex][i] += reservasCantidadHabitaciones[reservaIndex];
+                    break;
+                }
+            }
+        }
+
+        // Borrar la reserva
+        reservasClientes[reservaIndex] = null;
+        reservasHoteles[reservaIndex] = null;
+        reservasTiposHabitacion[reservaIndex] = null;
+        reservasCantidadHabitaciones[reservaIndex] = 0;
+        reservasFechaInicio[reservaIndex] = null;
+        reservasFechaFin[reservaIndex] = null;
+
+        System.out.println("La reserva ha sido eliminada. Redirigiendo a crear una nueva reserva...");
+        realizarReserva(scanner, hotelNombres, habitacionesTipos, habitacionesDisponibles, habitacionesPrecios,
+                reservasClientes, reservasHoteles, reservasTiposHabitacion, reservasCantidadHabitaciones, reservaIndex);
+
     }
 }
