@@ -45,6 +45,7 @@ public class Main {
 
         // Datos de reservas
         String[] reservasClientes = new String[100];
+        String[] reservasEmails = new String[100]; // Nuevo array para correos electrónicos
         String[] reservasHoteles = new String[100];
         String[] reservasTiposHabitacion = new String[100];
         int[] reservasCantidadHabitaciones = new int[100];
@@ -52,60 +53,51 @@ public class Main {
         LocalDate[] reservasFechaFin = new LocalDate[100];
         int reservaIndex = 0;
 
-        int opcion = 0;
+        int opcion;
         do {
-            try {
-                System.out.println("\n¡Bienvenido a Booking Hoteles!");
-                System.out.println("1. Buscar hoteles");
-                System.out.println("2. Crear reserva");
-                System.out.println("3. Ver reservas");
-                System.out.println("4. Buscar hoteles con más detalles");
-                System.out.println("5. Confirmar disponibilidad de habitaciones");
-                System.out.println("6. Realizar reserva personalizada");
-                System.out.println("7. Actualizar reserva");
-                System.out.println("8. Salir");
-                System.out.print("Seleccione una opción: ");
-                opcion = scanner.nextInt();
-                scanner.nextLine(); // Limpia el buffer
+            System.out.println("\n¡Bienvenido a Booking Hoteles!");
+            System.out.println("1. Buscar hoteles");
+            System.out.println("2. Crear reserva");
+            System.out.println("3. Ver reservas");
+            System.out.println("4. Buscar hoteles con más detalles");
+            System.out.println("5. Confirmar disponibilidad de habitaciones");
+            System.out.println("6. Realizar reserva personalizada");
+            System.out.println("7. Actualizar reserva");
+            System.out.println("8. Salir");
+            System.out.print("Seleccione una opción: ");
+            opcion = scanner.nextInt();
 
-                switch (opcion) {
-                    case 1:
-                        buscarHoteles(scanner, hotelNombres, hotelCiudades, hotelCalificaciones, hotelPreciosPorNoche, hotelDiaDeSol, hotelActividades, hotelIncluyeAlmuerzo, hotelIncluyeRefrigerio);
-                        break;
-                    case 2:
-                        reservaIndex = crearReserva(scanner, hotelNombres, habitacionesTipos, habitacionesDescripciones, habitacionesDisponibles, habitacionesPrecios, reservasClientes, reservasHoteles, reservasTiposHabitacion, reservasCantidadHabitaciones, reservasFechaInicio, reservasFechaFin, reservaIndex);
-                        break;
-                    case 3:
-                        verReservas(reservasClientes, reservasHoteles, reservasTiposHabitacion, reservasCantidadHabitaciones, reservasFechaInicio, reservasFechaFin, reservaIndex);
-                        break;
-                    case 4:
-                        buscarHotelesConParametros(scanner, hotelNombres, hotelCiudades, hotelCalificaciones, hotelPreciosPorNoche, hotelDiaDeSol, hotelActividades, hotelIncluyeAlmuerzo, hotelIncluyeRefrigerio, habitacionesTipos, habitacionesPrecios, habitacionesDisponibles);
-                        break;
-                    case 5:
-                        confirmarDisponibilidad(scanner, hotelNombres, habitacionesTipos, habitacionesDescripciones, habitacionesDisponibles, habitacionesPrecios);
-                        break;
-                    case 6:
-                        reservaIndex = realizarReserva(scanner, hotelNombres, habitacionesTipos, habitacionesDisponibles, habitacionesPrecios, reservasClientes, reservasHoteles, reservasTiposHabitacion, reservasCantidadHabitaciones, reservaIndex);
-                        break;
-                    case 7:
-                        actualizarReserva(scanner, hotelNombres, habitacionesTipos, habitacionesDisponibles, habitacionesPrecios, reservasClientes, reservasHoteles, reservasTiposHabitacion, reservasCantidadHabitaciones, reservasFechaInicio, reservasFechaFin, reservaIndex);
-                        break;
-                    case 8:
-                        System.out.println("¡Gracias por usar Booking Hoteles!");
-                        break;
-                    default:
-                        System.out.println("Opción no válida, intente de nuevo.");
-                }
-            } catch (InputMismatchException e) {
-                System.out.println("Error: Debe ingresar un número válido. Intente de nuevo.");
-                scanner.nextLine(); // Limpia el buffer incorrecto
-            } catch (DateTimeParseException e) {
-                System.out.println("Error: Formato de fecha incorrecto. Use YYYY-MM-DD.");
-            } catch (Exception e) {
-                System.out.println("Error inesperado: " + e.getMessage());
+            switch (opcion) {
+                case 1:
+                    buscarHoteles(scanner, hotelNombres, hotelCiudades, hotelCalificaciones, hotelPreciosPorNoche, hotelDiaDeSol, hotelActividades, hotelIncluyeAlmuerzo, hotelIncluyeRefrigerio);
+                    break;
+                case 2:
+                    reservaIndex = crearReserva(scanner, hotelNombres, habitacionesTipos, habitacionesDescripciones, habitacionesDisponibles, habitacionesPrecios, reservasClientes, reservasHoteles, reservasTiposHabitacion, reservasCantidadHabitaciones, reservasFechaInicio, reservasFechaFin, reservasEmails, reservaIndex);
+                    break;
+                case 3:
+                    verReservas(reservasClientes, reservasHoteles, reservasTiposHabitacion, reservasCantidadHabitaciones, reservasFechaInicio, reservasFechaFin, reservaIndex);
+                    break;
+                case 4:
+                    buscarHotelesConParametros(scanner, hotelNombres, hotelCiudades, hotelCalificaciones, hotelPreciosPorNoche, hotelDiaDeSol, hotelActividades, hotelIncluyeAlmuerzo, hotelIncluyeRefrigerio, habitacionesTipos, habitacionesPrecios, habitacionesDisponibles);
+                    break;
+                case 5:
+                    confirmarDisponibilidad(scanner, hotelNombres, habitacionesTipos, habitacionesDescripciones, habitacionesDisponibles, habitacionesPrecios);
+                    break;
+                case 6:
+                    reservaIndex = realizarReserva(scanner, hotelNombres, habitacionesTipos, habitacionesDisponibles, habitacionesPrecios, reservasClientes, reservasHoteles, reservasTiposHabitacion, reservasCantidadHabitaciones, reservasFechaInicio, reservasFechaFin, reservasEmails, reservaIndex);
+                    break;
+                case 7:
+                    actualizarReserva(scanner, hotelNombres, habitacionesTipos, habitacionesDisponibles, habitacionesPrecios, reservasClientes, reservasEmails, reservasHoteles, reservasTiposHabitacion, reservasCantidadHabitaciones, reservasFechaInicio, reservasFechaFin, reservaIndex);
+                    break;
+                case 8:
+                    System.out.println("¡Gracias por usar Booking Hoteles!");
+                    break;
+                default:
+                    System.out.println("Opción no válida, intente de nuevo.");
             }
         } while (opcion != 8);
     }
+
 
     public static void buscarHoteles(Scanner scanner, String[] nombres, String[] ciudades, float[] calificaciones, double[] preciosPorNoche,
                                      boolean[] diaDeSol, String[] actividades, boolean[] incluyeAlmuerzo, boolean[] incluyeRefrigerio) {
@@ -156,12 +148,12 @@ public class Main {
     public static int crearReserva(Scanner scanner, String[] hotelNombres, String[][] habitacionesTipos, String[][] habitacionesDescripciones,
                                    int[][] habitacionesDisponibles, double[][] habitacionesPrecios, String[] reservasClientes,
                                    String[] reservasHoteles, String[] reservasTiposHabitacion, int[] reservasCantidadHabitaciones,
-                                   LocalDate[] reservasFechaInicio, LocalDate[] reservasFechaFin, int reservaIndex) {
+                                   LocalDate[] reservasFechaInicio, LocalDate[] reservasFechaFin, String[] reservasEmails, int reservaIndex) {
         try {
             // Mostrar hoteles disponibles
             System.out.println("Hoteles disponibles:");
             for (String hotel : hotelNombres) {
-                System.out.println(hotel);
+                System.out.println("- " + hotel);
             }
 
             // Validación del nombre del hotel
@@ -192,6 +184,14 @@ public class Main {
             String cliente = scanner.nextLine().trim();
             if (cliente.isEmpty()) {
                 System.out.println("Error: El nombre del cliente no puede estar vacío.");
+                return reservaIndex;
+            }
+
+            // Solicitar email del cliente
+            System.out.print("Ingrese su email: ");
+            String email = scanner.nextLine().trim();
+            if (email.isEmpty() || !email.matches("^[\\w.-]+@[a-zA-Z\\d.-]+\\.[a-zA-Z]{2,}$")) {
+                System.out.println("Error: El email ingresado no es válido.");
                 return reservaIndex;
             }
 
@@ -257,13 +257,8 @@ public class Main {
                 }
             }
 
-            if (habitacionIndex == -1) {
-                System.out.println("Error: El tipo de habitación ingresado no es válido.");
-                return reservaIndex;
-            }
-
-            if (habitacionesDisponibles[hotelIndex][habitacionIndex] < cantidadHabitaciones) {
-                System.out.println("Error: No hay suficientes habitaciones disponibles para el tipo seleccionado.");
+            if (habitacionIndex == -1 || habitacionesDisponibles[hotelIndex][habitacionIndex] < cantidadHabitaciones) {
+                System.out.println("Error: El tipo de habitación ingresado no es válido o no hay suficientes habitaciones disponibles.");
                 return reservaIndex;
             }
 
@@ -275,6 +270,7 @@ public class Main {
             reservasCantidadHabitaciones[reservaIndex] = cantidadHabitaciones;
             reservasFechaInicio[reservaIndex] = inicio;
             reservasFechaFin[reservaIndex] = fin;
+            reservasEmails[reservaIndex] = email;
 
             System.out.println("¡Reserva realizada con éxito!");
             return reservaIndex + 1;
@@ -286,35 +282,38 @@ public class Main {
     }
 
 
+
     public static void verReservas(String[] reservasClientes, String[] reservasHoteles, String[] reservasTiposHabitacion,
-                                   int[] reservasCantidadHabitaciones, LocalDate[] reservasFechaInicio, LocalDate[] reservasFechaFin,
-                                   int reservaIndex) {
-        try {
-            // Validación si no hay reservas
-            if (reservaIndex == 0) {
-                System.out.println("No hay reservas registradas.");
-                return;
+                                   int[] reservasCantidadHabitaciones, LocalDate[] reservasFechaInicio,
+                                   LocalDate[] reservasFechaFin, int reservaIndex) {
+        if (reservaIndex == 0) {
+            System.out.println("No hay reservas registradas.");
+            return;
+        }
+
+        System.out.println("Reservas registradas:");
+        for (int i = 0; i < reservaIndex; i++) {
+            // Validación de consistencia
+            boolean datosConsistentes = reservasClientes[i] != null &&
+                    reservasHoteles[i] != null &&
+                    reservasTiposHabitacion[i] != null &&
+                    reservasCantidadHabitaciones[i] > 0 &&
+                    reservasFechaInicio[i] != null &&
+                    reservasFechaFin[i] != null &&
+                    !reservasFechaInicio[i].isAfter(reservasFechaFin[i]);
+
+            if (!datosConsistentes) {
+                System.out.printf("Reserva #%d tiene datos inconsistentes y no será mostrada.\n", i + 1);
+                continue;
             }
 
-            System.out.println("\nReservas registradas:");
-
-            for (int i = 0; i < reservaIndex; i++) {
-                // Validar que los datos no sean nulos
-                if (reservasClientes[i] == null || reservasHoteles[i] == null || reservasTiposHabitacion[i] == null ||
-                        reservasFechaInicio[i] == null || reservasFechaFin[i] == null || reservasCantidadHabitaciones[i] <= 0) {
-                    System.out.printf("Reserva #%d tiene datos inconsistentes y no será mostrada.\n", i + 1);
-                    continue; // Salta a la siguiente reserva
-                }
-
-                // Imprimir información de la reserva
-                System.out.printf("Cliente: %s, Hotel: %s, Tipo: %s, Cantidad: %d, Fechas: %s a %s\n",
-                        reservasClientes[i], reservasHoteles[i], reservasTiposHabitacion[i],
-                        reservasCantidadHabitaciones[i], reservasFechaInicio[i], reservasFechaFin[i]);
-            }
-        } catch (Exception e) {
-            System.out.println("Error inesperado al mostrar las reservas: " + e.getMessage());
+            // Mostrar reserva válida
+            System.out.printf("Cliente: %s, Hotel: %s, Tipo: %s, Cantidad: %d, Fechas: %s a %s\n",
+                    reservasClientes[i], reservasHoteles[i], reservasTiposHabitacion[i],
+                    reservasCantidadHabitaciones[i], reservasFechaInicio[i], reservasFechaFin[i]);
         }
     }
+
 
     public static void buscarHotelesConParametros(Scanner scanner, String[] nombres, String[] ciudades, float[] calificaciones, double[] preciosPorNoche,
                                                   boolean[] diaDeSol, String[] actividades, boolean[] incluyeAlmuerzo, boolean[] incluyeRefrigerio,
@@ -510,221 +509,186 @@ public class Main {
     }
 
 
-    public static int realizarReserva(Scanner scanner, String[] hotelNombres, String[][] habitacionesTipos, int[][] habitacionesDisponibles,
-                                      double[][] habitacionesPrecios, String[] reservasClientes, String[] reservasHoteles,
-                                      String[] reservasTiposHabitacion, int[] reservasCantidadHabitaciones, int reservaIndex) {
-        try {
-            // Mostrar hoteles disponibles
-            System.out.println("Hoteles disponibles:");
-            for (String hotel : hotelNombres) {
-                System.out.println(hotel);
+    public static int realizarReserva(Scanner scanner, String[] hotelNombres, String[][] habitacionesTipos, int[][] habitacionesDisponibles, double[][] habitacionesPrecios,
+                                      String[] reservasClientes, String[] reservasHoteles, String[] reservasTiposHabitacion, int[] reservasCantidadHabitaciones,
+                                      LocalDate[] reservasFechaInicio, LocalDate[] reservasFechaFin, String[] reservasEmails, int reservaIndex) {
+        System.out.println("Hoteles disponibles:");
+        for (String hotel : hotelNombres) {
+            System.out.println(hotel);
+        }
+
+        System.out.print("Ingrese el nombre del hotel: ");
+        scanner.nextLine(); // Limpiar buffer
+        String hotelNombre = scanner.nextLine();
+
+        int hotelIndex = -1;
+        for (int i = 0; i < hotelNombres.length; i++) {
+            if (hotelNombres[i].equalsIgnoreCase(hotelNombre)) {
+                hotelIndex = i;
+                break;
             }
+        }
 
-            // Validar el nombre del hotel
-            System.out.print("Ingrese el nombre del hotel: ");
-            scanner.nextLine(); // Limpiar buffer
-            String hotelNombre = scanner.nextLine();
-            if (hotelNombre == null || hotelNombre.trim().isEmpty()) {
-                System.out.println("El nombre del hotel no puede estar vacío.");
-                return reservaIndex;
-            }
-
-            int hotelIndex = -1;
-            for (int i = 0; i < hotelNombres.length; i++) {
-                if (hotelNombres[i].equalsIgnoreCase(hotelNombre)) {
-                    hotelIndex = i;
-                    break;
-                }
-            }
-
-            if (hotelIndex == -1) {
-                System.out.println("El hotel ingresado no existe.");
-                return reservaIndex;
-            }
-
-            // Validar los datos del cliente
-            System.out.print("Ingrese su nombre: ");
-            String nombre = scanner.nextLine();
-            if (nombre.trim().isEmpty()) {
-                System.out.println("El nombre no puede estar vacío.");
-                return reservaIndex;
-            }
-
-            System.out.print("Ingrese su apellido: ");
-            String apellido = scanner.nextLine();
-            if (apellido.trim().isEmpty()) {
-                System.out.println("El apellido no puede estar vacío.");
-                return reservaIndex;
-            }
-
-            System.out.print("Ingrese su email: ");
-            String email = scanner.nextLine();
-            if (!email.matches("^[\\w.-]+@[a-zA-Z\\d.-]+\\.[a-zA-Z]{2,}$")) {
-                System.out.println("El email ingresado no es válido.");
-                return reservaIndex;
-            }
-
-            System.out.print("Ingrese su nacionalidad: ");
-            String nacionalidad = scanner.nextLine();
-            if (nacionalidad.trim().isEmpty()) {
-                System.out.println("La nacionalidad no puede estar vacía.");
-                return reservaIndex;
-            }
-
-            System.out.print("Ingrese su número de teléfono: ");
-            String telefono = scanner.nextLine();
-            if (!telefono.matches("^\\d{7,15}$")) {
-                System.out.println("El número de teléfono debe contener entre 7 y 15 dígitos.");
-                return reservaIndex;
-            }
-
-            System.out.print("Ingrese su hora aproximada de llegada (HH:MM): ");
-            String horaLlegada = scanner.nextLine();
-            if (!horaLlegada.matches("^([01]?\\d|2[0-3]):[0-5]\\d$")) {
-                System.out.println("La hora de llegada debe estar en el formato HH:MM (24 horas).");
-                return reservaIndex;
-            }
-
-            // Validar cantidad de habitaciones
-            System.out.print("Cantidad de habitaciones: ");
-            int cantidadHabitaciones = scanner.nextInt();
-            if (cantidadHabitaciones <= 0) {
-                System.out.println("La cantidad de habitaciones debe ser mayor a 0.");
-                return reservaIndex;
-            }
-
-            // Mostrar habitaciones disponibles
-            System.out.println("Habitaciones disponibles:");
-            boolean hayDisponibles = false;
-            for (int i = 0; i < habitacionesTipos[hotelIndex].length; i++) {
-                if (habitacionesDisponibles[hotelIndex][i] >= cantidadHabitaciones) {
-                    hayDisponibles = true;
-                    System.out.printf("%s, Precio por noche: %.2f\n", habitacionesTipos[hotelIndex][i], habitacionesPrecios[hotelIndex][i]);
-                }
-            }
-
-            if (!hayDisponibles) {
-                System.out.println("No hay habitaciones disponibles que cumplan con los criterios.");
-                return reservaIndex;
-            }
-
-            // Seleccionar tipo de habitación
-            System.out.print("Seleccione el tipo de habitación: ");
-            scanner.nextLine(); // Limpiar buffer
-            String tipoHabitacion = scanner.nextLine();
-
-            int habitacionIndex = -1;
-            for (int i = 0; i < habitacionesTipos[hotelIndex].length; i++) {
-                if (habitacionesTipos[hotelIndex][i].equalsIgnoreCase(tipoHabitacion)) {
-                    habitacionIndex = i;
-                    break;
-                }
-            }
-
-            if (habitacionIndex == -1 || habitacionesDisponibles[hotelIndex][habitacionIndex] < cantidadHabitaciones) {
-                System.out.println("No hay disponibilidad para el tipo de habitación seleccionado.");
-                return reservaIndex;
-            }
-
-            // Actualizar disponibilidad y registrar la reserva
-            habitacionesDisponibles[hotelIndex][habitacionIndex] -= cantidadHabitaciones;
-            reservasClientes[reservaIndex] = nombre + " " + apellido;
-            reservasHoteles[reservaIndex] = hotelNombre;
-            reservasTiposHabitacion[reservaIndex] = tipoHabitacion;
-            reservasCantidadHabitaciones[reservaIndex] = cantidadHabitaciones;
-
-            System.out.println("¡Se ha realizado la reserva con éxito!");
-            return reservaIndex + 1;
-
-        } catch (Exception e) {
-            System.out.println("Error: Entrada no válida. Verifique los datos ingresados.");
+        if (hotelIndex == -1) {
+            System.out.println("El hotel no existe.");
             return reservaIndex;
         }
+
+        System.out.print("Ingrese su nombre: ");
+        String nombre = scanner.nextLine();
+
+        System.out.print("Ingrese su apellido: ");
+        String apellido = scanner.nextLine();
+
+        System.out.print("Ingrese su email: ");
+        String email = scanner.nextLine();
+        if (email.isEmpty() || !email.matches("^[\\w.-]+@[a-zA-Z\\d.-]+\\.[a-zA-Z]{2,}$")) {
+            System.out.println("Error: El email ingresado no es válido.");
+            return reservaIndex;
+        }
+
+        System.out.print("Ingrese su nacionalidad: ");
+        String nacionalidad = scanner.nextLine();
+
+        System.out.print("Ingrese su número de teléfono: ");
+        String telefono = scanner.nextLine();
+
+        System.out.print("Ingrese su hora aproximada de llegada (HH:MM): ");
+        String horaLlegada = scanner.nextLine();
+
+        // Solicitar fechas de inicio y fin
+        System.out.print("Fecha de inicio (YYYY-MM-DD): ");
+        LocalDate inicio = null;
+        try {
+            inicio = LocalDate.parse(scanner.nextLine());
+        } catch (Exception e) {
+            System.out.println("Formato de fecha inválido. Inténtelo de nuevo.");
+            return reservaIndex;
+        }
+
+        System.out.print("Fecha de fin (YYYY-MM-DD): ");
+        LocalDate fin = null;
+        try {
+            fin = LocalDate.parse(scanner.nextLine());
+        } catch (Exception e) {
+            System.out.println("Formato de fecha inválido. Inténtelo de nuevo.");
+            return reservaIndex;
+        }
+
+        if (inicio.isAfter(fin)) {
+            System.out.println("La fecha de inicio debe ser anterior o igual a la fecha de fin.");
+            return reservaIndex;
+        }
+
+        System.out.print("Cantidad de habitaciones: ");
+        int cantidadHabitaciones = scanner.nextInt();
+
+        System.out.println("Habitaciones disponibles:");
+        for (int i = 0; i < habitacionesTipos[hotelIndex].length; i++) {
+            if (habitacionesDisponibles[hotelIndex][i] >= cantidadHabitaciones) {
+                System.out.printf("%s, Precio por noche: %.2f\n", habitacionesTipos[hotelIndex][i], habitacionesPrecios[hotelIndex][i]);
+            }
+        }
+
+        System.out.print("Seleccione el tipo de habitación: ");
+        scanner.nextLine(); // Limpiar buffer
+        String tipoHabitacion = scanner.nextLine();
+
+        int habitacionIndex = -1;
+        for (int i = 0; i < habitacionesTipos[hotelIndex].length; i++) {
+            if (habitacionesTipos[hotelIndex][i].equalsIgnoreCase(tipoHabitacion)) {
+                habitacionIndex = i;
+                break;
+            }
+        }
+
+        if (habitacionIndex == -1 || habitacionesDisponibles[hotelIndex][habitacionIndex] < cantidadHabitaciones) {
+            System.out.println("No hay disponibilidad para este tipo de habitación.");
+            return reservaIndex;
+        }
+
+        // Actualizar la disponibilidad
+        habitacionesDisponibles[hotelIndex][habitacionIndex] -= cantidadHabitaciones;
+
+        // Registrar la reserva
+        reservasClientes[reservaIndex] = nombre + " " + apellido;
+        reservasEmails[reservaIndex] = email;
+        reservasHoteles[reservaIndex] = hotelNombre;
+        reservasTiposHabitacion[reservaIndex] = tipoHabitacion;
+        reservasCantidadHabitaciones[reservaIndex] = cantidadHabitaciones;
+        reservasFechaInicio[reservaIndex] = inicio;
+        reservasFechaFin[reservaIndex] = fin;
+
+        System.out.println("¡Se ha realizado la reserva con éxito!");
+        return reservaIndex + 1;
     }
+
+
 
     public static void actualizarReserva(Scanner scanner, String[] hotelNombres, String[][] habitacionesTipos, int[][] habitacionesDisponibles,
-                                         double[][] habitacionesPrecios, String[] reservasClientes, String[] reservasHoteles,
+                                         double[][] habitacionesPrecios, String[] reservasClientes, String[] reservasEmails, String[] reservasHoteles,
                                          String[] reservasTiposHabitacion, int[] reservasCantidadHabitaciones, LocalDate[] reservasFechaInicio,
                                          LocalDate[] reservasFechaFin, int reservaIndex) {
+        if (reservaIndex == 0) {
+            System.out.println("No hay reservas registradas.");
+            return;
+        }
+
+        System.out.print("Ingrese su email: ");
+        scanner.nextLine(); // Limpiar buffer
+        String email = scanner.nextLine();
+
+        int reservaEncontrada = -1;
+        for (int i = 0; i < reservaIndex; i++) {
+            if (reservasEmails[i] != null && reservasEmails[i].equalsIgnoreCase(email)) {
+                reservaEncontrada = i;
+                break;
+            }
+        }
+
+        if (reservaEncontrada == -1) {
+            System.out.println("No se encontró ninguna reserva asociada al email proporcionado.");
+            return;
+        }
+
+        // Mostrar la reserva encontrada
+        System.out.printf("Reserva encontrada:\nCliente: %s\nHotel: %s\nHabitación: %s\nCantidad: %d\nFechas: %s a %s\n",
+                reservasClientes[reservaEncontrada],
+                reservasHoteles[reservaEncontrada],
+                reservasTiposHabitacion[reservaEncontrada],
+                reservasCantidadHabitaciones[reservaEncontrada],
+                reservasFechaInicio[reservaEncontrada],
+                reservasFechaFin[reservaEncontrada]);
+
+        // Opciones de actualización
+        System.out.println("¿Qué desea hacer?\n1. Cambiar habitación\n2. Cambiar alojamiento\n3. Cancelar");
+        int opcion;
         try {
-            if (reservaIndex == 0) {
-                System.out.println("No hay reservas registradas.");
-                return;
-            }
-
-            // Solicitar email y validar entrada
-            System.out.print("Ingrese su email: ");
-            scanner.nextLine(); // Limpiar buffer
-            String email = scanner.nextLine();
-            if (!email.matches("^[\\w.-]+@[a-zA-Z\\d.-]+\\.[a-zA-Z]{2,}$")) {
-                System.out.println("El email ingresado no es válido.");
-                return;
-            }
-
-            // Solicitar fecha de nacimiento y validar formato
-            System.out.print("Ingrese su fecha de nacimiento (YYYY-MM-DD): ");
-            LocalDate fechaNacimiento;
-            try {
-                fechaNacimiento = LocalDate.parse(scanner.nextLine());
-            } catch (Exception e) {
-                System.out.println("La fecha ingresada no es válida. Use el formato YYYY-MM-DD.");
-                return;
-            }
-
-            // Buscar la reserva
-            int reservaEncontrada = -1;
-            for (int i = 0; i < reservaIndex; i++) {
-                if (reservasClientes[i] != null && reservasClientes[i].contains(email)) {
-                    reservaEncontrada = i;
-                    break;
-                }
-            }
-
-            if (reservaEncontrada == -1) {
-                System.out.println("No se encontró ninguna reserva asociada al email proporcionado.");
-                return;
-            }
-
-            // Mostrar la reserva encontrada
-            System.out.printf("Reserva encontrada:\nCliente: %s\nHotel: %s\nHabitación: %s\nCantidad: %d\nFechas: %s a %s\n",
-                    reservasClientes[reservaEncontrada],
-                    reservasHoteles[reservaEncontrada],
-                    reservasTiposHabitacion[reservaEncontrada],
-                    reservasCantidadHabitaciones[reservaEncontrada],
-                    reservasFechaInicio[reservaEncontrada],
-                    reservasFechaFin[reservaEncontrada]);
-
-            // Opciones de actualización
-            System.out.println("¿Qué desea hacer?\n1. Cambiar habitación\n2. Cambiar alojamiento\n3. Cancelar");
-            int opcion;
-            try {
-                opcion = scanner.nextInt();
-            } catch (Exception e) {
-                System.out.println("La opción ingresada no es válida.");
-                scanner.nextLine(); // Limpiar buffer
-                return;
-            }
-
-            switch (opcion) {
-                case 1:
-                    cambiarHabitacion(scanner, reservasHoteles[reservaEncontrada], habitacionesTipos, habitacionesDisponibles,
-                            habitacionesPrecios, hotelNombres, reservasTiposHabitacion, reservasCantidadHabitaciones, reservaEncontrada);
-                    break;
-                case 2:
-                    cambiarAlojamiento(scanner, reservaEncontrada, reservasClientes, reservasHoteles, reservasTiposHabitacion,
-                            reservasCantidadHabitaciones, reservasFechaInicio, reservasFechaFin, habitacionesDisponibles,
-                            hotelNombres, habitacionesTipos, habitacionesPrecios);
-                    break;
-                case 3:
-                    System.out.println("Operación cancelada.");
-                    break;
-                default:
-                    System.out.println("Opción no válida. Inténtelo de nuevo.");
-            }
+            opcion = scanner.nextInt();
         } catch (Exception e) {
-            System.out.println("Ocurrió un error al actualizar la reserva. Verifique sus datos e inténtelo nuevamente.");
+            System.out.println("La opción ingresada no es válida.");
+            scanner.nextLine(); // Limpiar buffer
+            return;
+        }
+
+        switch (opcion) {
+            case 1:
+                cambiarHabitacion(scanner, reservasHoteles[reservaEncontrada], habitacionesTipos, habitacionesDisponibles,
+                        habitacionesPrecios, hotelNombres, reservasTiposHabitacion, reservasCantidadHabitaciones, reservaEncontrada);
+                break;
+            case 2:
+                cambiarAlojamiento(scanner, reservaEncontrada, reservasClientes, reservasHoteles, reservasTiposHabitacion,
+                        reservasCantidadHabitaciones, reservasFechaInicio, reservasFechaFin, habitacionesDisponibles,
+                        hotelNombres, habitacionesTipos, habitacionesPrecios, reservasEmails);
+                break;
+            case 3:
+                System.out.println("Operación cancelada.");
+                break;
+            default:
+                System.out.println("Opción no válida. Inténtelo de nuevo.");
         }
     }
+
 
     public static void cambiarHabitacion(Scanner scanner, String hotelNombre, String[][] habitacionesTipos, int[][] habitacionesDisponibles,
                                          double[][] habitacionesPrecios, String[] hotelNombres, String[] reservasTiposHabitacion,
@@ -800,7 +764,7 @@ public class Main {
     public static void cambiarAlojamiento(Scanner scanner, int reservaIndex, String[] reservasClientes, String[] reservasHoteles,
                                           String[] reservasTiposHabitacion, int[] reservasCantidadHabitaciones, LocalDate[] reservasFechaInicio,
                                           LocalDate[] reservasFechaFin, int[][] habitacionesDisponibles, String[] hotelNombres,
-                                          String[][] habitacionesTipos, double[][] habitacionesPrecios) {
+                                          String[][] habitacionesTipos, double[][] habitacionesPrecios, String[] reservasEmails) {
         try {
             // Validar que la reserva exista
             if (reservaIndex < 0 || reservasClientes[reservaIndex] == null) {
@@ -837,12 +801,14 @@ public class Main {
             reservasCantidadHabitaciones[reservaIndex] = 0;
             reservasFechaInicio[reservaIndex] = null;
             reservasFechaFin[reservaIndex] = null;
+            reservasEmails[reservaIndex] = null;
 
             System.out.println("La reserva ha sido eliminada. Redirigiendo a crear una nueva reserva...");
 
             // Redirigir a crear una nueva reserva
-            realizarReserva(scanner, hotelNombres, habitacionesTipos, habitacionesDisponibles, habitacionesPrecios,
-                    reservasClientes, reservasHoteles, reservasTiposHabitacion, reservasCantidadHabitaciones, reservaIndex);
+            reservaIndex = realizarReserva(scanner, hotelNombres, habitacionesTipos, habitacionesDisponibles, habitacionesPrecios,
+                    reservasClientes, reservasHoteles, reservasTiposHabitacion, reservasCantidadHabitaciones, reservasFechaInicio,
+                    reservasFechaFin, reservasEmails, reservaIndex);
 
         } catch (Exception e) {
             System.out.println("Error inesperado al cambiar el alojamiento. Por favor, inténtelo de nuevo.");
